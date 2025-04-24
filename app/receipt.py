@@ -1,4 +1,5 @@
 from datetime import date, datetime
+import pprint
 
 from app.purchased_item import PurchasedItem
 
@@ -12,7 +13,21 @@ class Receipt:
     ##                          "purchaseTime", "total", and "items" for the
     ##                          receipt
     ##
+    ## Raises:
+    ##     KeyError: if receipt_data doesn't contain "retailer", "purchaseDate",
+    ##               "purchaseTime", "total", or "items" as keys
+    ##
     def __init__(self, receipt_data: dict):
+        expected_keys = [
+            'retailer', 'purchaseDate', 'purchaseTime', 'total', 'items'
+        ]
+
+        for key in expected_keys:
+            if not key in receipt_data:
+                error_msg = f'Receipt must define the {key} key:\n'
+                receipt_str = pprint.pformat(receipt_data, sort_dicts=False)
+                raise KeyError(error_msg + receipt_str)
+
         self.retailer = receipt_data['retailer']
         self.purchase_date = self._parse_date(receipt_data['purchaseDate'])
         self.purchase_time = self._parse_time(receipt_data['purchaseTime'])
