@@ -50,4 +50,4 @@ class ReceiptDatabase:
     ##
     def _generate_id(self, _receipt: Receipt) -> str:
         self._receipts_added += 1
-        return self._receipts_added
+        return str(self._receipts_added)
