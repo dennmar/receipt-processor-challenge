@@ -38,12 +38,23 @@ def create_app() -> Flask:
     ##     id (str): the id of the receipt
     ##
     ## Returns:
-    ##     A dict with the key "points" that specifies the amount of points
-    ##     calculated for the receipt with the matching id.
+    ##     On success, a tuple is returned which contains a dict specifying
+    ##     the amount of points calculated for the receipt with the matching
+    ##     id and an int for the response code. On failure, a tuple is
+    ##     returned which contains a string describing the cause of failure
+    ##     and an int for the response code.
+    ##
     @app.route("/receipts/<id>/points")
-    def get_points(id) -> dict:
-        receipt = receipt_db.get_receipt(id)
-        points = score_receipt(receipt)
-        return {'points': points}
+    def get_points(id) -> tuple:
+        try:
+            receipt = receipt_db.get_receipt(id)
+
+            if receipt is not None:
+                points = score_receipt(receipt)
+                return {'points': points}, 200
+            else:
+                return f'No receipt found with the id of {id}', 400
+        except Exception as err:
+            return repr(err), 500
 
     return app
