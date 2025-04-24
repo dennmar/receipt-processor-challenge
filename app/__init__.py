@@ -1,6 +1,7 @@
 from flask import Flask, request
 
 from app.receipt_database import ReceiptDatabase
+from app.point_calculator import score_receipt
 
 receipt_db = ReceiptDatabase()
 
@@ -34,6 +35,8 @@ def create_app() -> Flask:
     ##     calculated for the receipt with the matching id.
     @app.route("/receipts/<id>/points")
     def get_points(id) -> dict:
-        return {'points': 0}
+        receipt = receipt_db.get_receipt(id)
+        points = score_receipt(receipt)
+        return {'points': points}
 
     return app
