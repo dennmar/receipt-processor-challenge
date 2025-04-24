@@ -1,3 +1,5 @@
+import pprint
+
 ## An item purchased from a retailer.
 ##
 class PurchasedItem:
@@ -7,7 +9,19 @@ class PurchasedItem:
     ##     item (dict): a dict with keys "shortDescription" and "price" for
     ##                  the purchased item
     ##
+    ## Raises:
+    ##     KeyError: if item doesn't contain "shortDescription" or "price"
+    ##               as keys
+    ##
     def __init__(self, item: dict):
+        expected_keys = ['shortDescription', 'price']
+
+        for key in expected_keys:
+            if not key in item:
+                error_msg = f'Item in receipt must define the {key} key:\n'
+                item_str = pprint.pformat(item, sort_dicts=False)
+                raise KeyError(error_msg + item_str)
+
         self.short_description = item['shortDescription']
         self.price = self._parse_price(item['price'])
 
