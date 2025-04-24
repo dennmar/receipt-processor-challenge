@@ -39,11 +39,18 @@ class Receipt:
     ## Parameters:
     ##     purchase_date (str): the string to parse for the receipt date
     ##
+    ## Raises:
+    ##     ValueError: if the purchase date format doesn't match "YYYY-MM-DD"
+    ##
     ## Returns:
     ##     A date for the purchase date of the receipt.
     ##
     def _parse_date(self, purchase_date: str) -> date:
-        return date.fromisoformat(purchase_date)
+        try:
+            return date.fromisoformat(purchase_date)
+        except ValueError:
+            error_msg = 'Receipt purchase date does not match "YYYY-MM-DD": '
+            raise ValueError(error_msg + purchase_date)
 
     ## Parse the purchase time from the given string.
     ##
