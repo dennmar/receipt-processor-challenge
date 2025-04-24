@@ -57,11 +57,18 @@ class Receipt:
     ## Parameters:
     ##     purchase_time (str): the string to parse for the receipt time
     ##
+    ## Raises:
+    ##     ValueError: if the purchase time format doesn't match "H:M"
+    ##
     ## Returns:
     ##     A datetime for the purchase time of the receipt.
     ##
     def _parse_time(self, purchase_time: str) -> datetime:
-        return datetime.strptime(purchase_time, '%H:%M').time()
+        try:
+            return datetime.strptime(purchase_time, '%H:%M').time()
+        except ValueError:
+            error_msg = 'Receipt purchase time does not match "H:M": '
+            raise ValueError(error_msg + purchase_time)
 
     ## Parse the total cost from the given string.
     ##
