@@ -16,14 +16,21 @@ def create_app() -> Flask:
     ## Store the receipt data as a receipt in the database.
     ##
     ## Returns:
-    ##     A dict with the key "id" for the unique id of the receipt stored in
-    ##     the database.
+    ##     On success, a tuple is returned which contains a dict specifying
+    ##     the unique id of the receipt and an int for the response code.
+    ##     On failure, a tuple is returned which contains a string for the
+    ##     cause of failure and an int for the response code.
     ##
     @app.route("/receipts/process", methods=['POST'])
-    def store_receipt() -> dict:
-        receipt_data = request.get_json()
-        receipt_id = receipt_db.add_receipt(receipt_data)
-        return {'id': receipt_id}
+    def store_receipt() -> tuple:
+        try:
+            receipt_data = request.get_json()
+            receipt_id = receipt_db.add_receipt(receipt_data)
+            return {'id': receipt_id}, 200
+        except (ValueError, KeyError) as err:
+            return str(err.args[0]), 400
+        except Exception as err:
+            return repr(err), 500
 
     ## Retrieve the amount of points for the receipt with the given id.
     ##
