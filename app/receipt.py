@@ -1,4 +1,5 @@
 from datetime import date, datetime
+import pprint
 
 from app.purchased_item import PurchasedItem
 
@@ -12,7 +13,21 @@ class Receipt:
     ##                          "purchaseTime", "total", and "items" for the
     ##                          receipt
     ##
+    ## Raises:
+    ##     KeyError: if receipt_data doesn't contain "retailer", "purchaseDate",
+    ##               "purchaseTime", "total", or "items" as keys
+    ##
     def __init__(self, receipt_data: dict):
+        expected_keys = [
+            'retailer', 'purchaseDate', 'purchaseTime', 'total', 'items'
+        ]
+
+        for key in expected_keys:
+            if not key in receipt_data:
+                error_msg = f'Receipt must define the {key} key:\n'
+                receipt_str = pprint.pformat(receipt_data, sort_dicts=False)
+                raise KeyError(error_msg + receipt_str)
+
         self.retailer = receipt_data['retailer']
         self.purchase_date = self._parse_date(receipt_data['purchaseDate'])
         self.purchase_time = self._parse_time(receipt_data['purchaseTime'])
@@ -24,22 +39,36 @@ class Receipt:
     ## Parameters:
     ##     purchase_date (str): the string to parse for the receipt date
     ##
+    ## Raises:
+    ##     ValueError: if the purchase date format doesn't match "YYYY-MM-DD"
+    ##
     ## Returns:
     ##     A date for the purchase date of the receipt.
     ##
     def _parse_date(self, purchase_date: str) -> date:
-        return date.fromisoformat(purchase_date)
+        try:
+            return date.fromisoformat(purchase_date)
+        except ValueError:
+            error_msg = 'Receipt purchase date does not match "YYYY-MM-DD": '
+            raise ValueError(error_msg + purchase_date)
 
     ## Parse the purchase time from the given string.
     ##
     ## Parameters:
     ##     purchase_time (str): the string to parse for the receipt time
     ##
+    ## Raises:
+    ##     ValueError: if the purchase time format doesn't match "H:M"
+    ##
     ## Returns:
     ##     A datetime for the purchase time of the receipt.
     ##
     def _parse_time(self, purchase_time: str) -> datetime:
-        return datetime.strptime(purchase_time, '%H:%M').time()
+        try:
+            return datetime.strptime(purchase_time, '%H:%M').time()
+        except ValueError:
+            error_msg = 'Receipt purchase time does not match "H:M": '
+            raise ValueError(error_msg + purchase_time)
 
     ## Parse the total cost from the given string.
     ##
