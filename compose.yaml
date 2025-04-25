@@ -1,6 +1,12 @@
 services:
   web: 
-    build: app
+    build:
+      context: app
+      dockerfile: Dockerfile.app
     stop_signal: SIGINT
     ports:
       - '8000:8000'
+  test:
+    build:
+      context: app
+      dockerfile: Dockerfile.test
