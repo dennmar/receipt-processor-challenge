@@ -75,11 +75,18 @@ class Receipt:
     ## Parameters:
     ##     total_cost (str): the string to parse for the receipt's total cost
     ##
+    ## Raises:
+    ##     ValueError: if the total cost cannot be parsed from the given string
+    ##
     ## Returns:
     ##     A float for the total cost of the receipt.
     ##
     def _parse_total_cost(self, total_cost: str) -> float:
-        return float(total_cost)
+        try:
+            return float(total_cost)
+        except ValueError:
+            error_msg = 'Total could not be parsed for receipt: '
+            raise ValueError(error_msg + total_cost)
 
     ## Parse the purchased items from the given list.
     ##
