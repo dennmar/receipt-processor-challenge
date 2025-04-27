@@ -63,6 +63,35 @@ in the [api.yml](./api.yml) file. Note that the 400 Bad Request and 404 Not Foun
    ```
 5. Stop the application by pressing `CTRL+C` on the terminal running the application (or by running `docker compose down web`).
 
+## How to Execute Tests
+
+1. Open a terminal and navigate to the directory containing [compose.yaml](./compose.yaml) and the files above.
+2. Execute the tests by running `docker compose up test`.
+
+   All tests should pass and the output on the terminal should look like this:
+   ```
+   [+] Building 0.0s (0/0)                                      docker:default
+   [+] Running 1/0
+    ✔ Container receipt-processor-challenge-test-1  Created               0.0s
+   Attaching to receipt-processor-challenge-test-1
+   receipt-processor-challenge-test-1  | ============================= test session starts ==============================
+   receipt-processor-challenge-test-1  | platform linux -- Python 3.10.17, pytest-8.3.5, pluggy-1.5.0
+   receipt-processor-challenge-test-1  | rootdir: /root
+   receipt-processor-challenge-test-1  | plugins: mock-3.14.0
+   receipt-processor-challenge-test-1  | collected 152 items
+   receipt-processor-challenge-test-1  |
+   receipt-processor-challenge-test-1  | app/tests/test_app.py ........................                           [ 15%]
+   receipt-processor-challenge-test-1  | app/tests/test_point_calculator.py ..................................... [ 40%]
+   receipt-processor-challenge-test-1  | ........                                                                 [ 45%]
+   receipt-processor-challenge-test-1  | app/tests/test_purchased_item.py ...................                     [ 57%]
+   receipt-processor-challenge-test-1  | app/tests/test_receipt.py .............................................. [ 88%]
+   receipt-processor-challenge-test-1  | ...                                                                      [ 90%]
+   receipt-processor-challenge-test-1  | app/tests/test_receipt_database.py ...............                       [100%]
+   receipt-processor-challenge-test-1  |
+   receipt-processor-challenge-test-1  | ============================= 152 passed in 0.68s ==============================
+   receipt-processor-challenge-test-1 exited with code 0
+   ```
+
 ---
 ## Summary of API Specification
 
