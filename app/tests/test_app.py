@@ -418,7 +418,7 @@ class TestGetPoints:
 
     def test_empty_db_resp_code(self, client: FlaskClient) -> None:
         resp = client.get('receipts/1/points')
-        assert resp.status_code == 400
+        assert resp.status_code == 404
 
     def test_empty_db_data(self, client: FlaskClient) -> None:
         resp = client.get('receipts/1/points')
@@ -434,7 +434,7 @@ class TestGetPoints:
         })
         resp = client.get('receipts/2/points')
 
-        assert resp.status_code == 400
+        assert resp.status_code == 404
 
     def test_invalid_id_data(self, client: FlaskClient) -> None:
         client.post(self.ADD_ROUTE, json={
