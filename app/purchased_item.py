@@ -13,7 +13,7 @@ class PurchasedItem:
     ##     KeyError: if item doesn't contain "shortDescription" or "price"
     ##               as keys
     ##
-    def __init__(self, item: dict):
+    def __init__(self, item: dict) -> None:
         expected_keys = ['shortDescription', 'price']
 
         for key in expected_keys:

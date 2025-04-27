@@ -17,7 +17,7 @@ class Receipt:
     ##     KeyError: if receipt_data doesn't contain "retailer", "purchaseDate",
     ##               "purchaseTime", "total", or "items" as keys
     ##
-    def __init__(self, receipt_data: dict):
+    def __init__(self, receipt_data: dict) -> None:
         expected_keys = [
             'retailer', 'purchaseDate', 'purchaseTime', 'total', 'items'
         ]
