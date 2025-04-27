@@ -133,3 +133,32 @@ class Receipt:
     ##
     def get_purchased_items(self) -> list[PurchasedItem]:
         return self.purchased_items
+
+    ## Check if the given object is equivalent to this object.
+    ##
+    ## Parameters:
+    ##     other (any): the other object to check for equivalence
+    ##
+    ## Returns:
+    ##     True if the given object is equivalent to this object; false
+    ##     otherwise.
+    ##
+    def __eq__(self, other: any) -> bool:
+        if isinstance(other, Receipt):
+            self_attr = (
+                self.retailer,
+                self.purchase_date,
+                self.purchase_time,
+                self.total_cost,
+                self.purchased_items
+            )
+            other_attr = (
+                other.retailer,
+                other.purchase_date,
+                other.purchase_time,
+                other.total_cost,
+                other.purchased_items
+            )
+            return self_attr == other_attr
+
+        return False

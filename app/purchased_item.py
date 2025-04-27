@@ -51,3 +51,20 @@ class PurchasedItem:
     ##
     def get_price(self) -> float:
         return self.price
+
+    ## Check if the given object is equivalent to this object.
+    ##
+    ## Parameters:
+    ##     other (any): the other object to check for equivalence
+    ##
+    ## Returns:
+    ##     True if the given object is equivalent to this object; false
+    ##     otherwise.
+    ##
+    def __eq__(self, other: any) -> bool:
+        if isinstance(other, PurchasedItem):
+            self_attr = (self.short_description, self.price)
+            other_attr = (other.short_description, other.price)
+            return self_attr == other_attr
+
+        return False

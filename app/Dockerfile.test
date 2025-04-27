@@ -1,0 +1,8 @@
+FROM python:3.10-alpine
+
+WORKDIR /root
+
+COPY . /root/app
+RUN pip3 install -r app/requirements.txt
+
+ENTRYPOINT ["pytest"]
