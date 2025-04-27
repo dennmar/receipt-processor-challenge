@@ -3,8 +3,6 @@ from flask import Flask, request
 from app.receipt_database import ReceiptDatabase
 from app.point_calculator import score_receipt
 
-receipt_db = ReceiptDatabase()
-
 ## Create the Flask application for the receipt processor.
 ##
 ## Returns:
@@ -12,6 +10,7 @@ receipt_db = ReceiptDatabase()
 ##
 def create_app() -> Flask:
     app = Flask(__name__)
+    receipt_db = ReceiptDatabase()
 
     ## Store the receipt data as a receipt in the database.
     ##

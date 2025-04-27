@@ -30,11 +30,18 @@ class PurchasedItem:
     ## Parameters:
     ##     price_str (str): the string to parse for the price
     ##
+    ## Raises:
+    ##     ValueError: if the price could not be parsed from the given string
+    ##
     ## Returns:
     ##     A float for the parsed price.
     ##
     def _parse_price(self, price_str: str) -> float:
-        return float(price_str)
+        try:
+            return float(price_str)
+        except ValueError:
+            error_msg = 'Price could not be parsed for item: '
+            raise ValueError(error_msg + price_str)
 
     ## Retrieve the short description for the purchased item.
     ##
