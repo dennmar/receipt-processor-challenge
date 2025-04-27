@@ -335,7 +335,7 @@ class TestGetPoints:
             'purchaseTime': '14:00',
             'items': [
                 {
-                    'shortDescription': '  Stuffed Bears     ',
+                    'shortDescription': '  Stuffed Teddy Bear     ',
                     'price': '230.28'
                 },
                 {
@@ -343,7 +343,7 @@ class TestGetPoints:
                     'price': '129.00'
                 },
                 {
-                    'shortDescription': 'Stuffed Pig #1',
+                    'shortDescription': 'Stuffed Pig #12',
                     'price': '10.24'
                 },
                 {
