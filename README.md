@@ -1,19 +1,8 @@
 # Receipt Processor
 
-Build a webservice that fulfils the documented API. The API is described below. A formal definition is provided 
-in the [api.yml](./api.yml) file. We will use the described API to test your solution.
-
-Provide any instructions required to run your application.
-
-Data does not need to persist when your application stops. It is sufficient to store information in memory. There are too many different database solutions, we will not be installing a database on our system when testing your application.
-
-## Language Selection
-
-You can assume our engineers have Go and Docker installed to run your application. Go is our preferred language, but choosing it will not give you an advantage in the evaluation. If you are not using Go, include a Dockerized setup to run the code. You should also provide detailed instructions if your Docker file requires any additional configuration to run the application.
-
-## Submitting Your Solution
-
-Provide a link to a public repository, such as GitHub or BitBucket, that contains your code to the provided link through Greenhouse.
+A webservice that stores and scores receipts, fulfilling the documented API. The API is described below. A formal definition is provided
+in the [api.yml](./api.yml) file. Note that the 400 Bad Request and 404 Not Found responses from the webservice deviate from the
+[api.yml](./api.yml) file in favor of a more informative error description.
 
 ---
 ## Summary of API Specification
