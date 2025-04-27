@@ -1,19 +1,96 @@
 # Receipt Processor
 
-Build a webservice that fulfils the documented API. The API is described below. A formal definition is provided 
-in the [api.yml](./api.yml) file. We will use the described API to test your solution.
+A webservice that stores and scores receipts, fulfilling the documented API. The API is described below. A formal definition is provided
+in the [api.yml](./api.yml) file. Note that the 400 Bad Request and 404 Not Found responses from the webservice deviate from the
+[api.yml](./api.yml) file in favor of a more informative error description.
 
-Provide any instructions required to run your application.
+## How to Run
 
-Data does not need to persist when your application stops. It is sufficient to store information in memory. There are too many different database solutions, we will not be installing a database on our system when testing your application.
+1. Open a terminal and navigate to the directory containing [compose.yaml](./compose.yaml) and the files above.
+2. Start the application by running `docker compose up web`.
 
-## Language Selection
+   The output on the terminal should be similar to this:
+   ```
+   [+] Building 0.0s (0/0)                                      docker:default
+   [+] Running 1/0
+    ✔ Container receipt-processor-challenge-web-1  Created                0.0s
+   Attaching to receipt-processor-challenge-web-1
+   receipt-processor-challenge-web-1  | [2025-04-27 20:18:21 +0000] [1] [INFO] Starting gunicorn 23.0.0
+   receipt-processor-challenge-web-1  | [2025-04-27 20:18:21 +0000] [1] [INFO] Listening at: http://0.0.0.0:8000 (1)
+   receipt-processor-challenge-web-1  | [2025-04-27 20:18:21 +0000] [1] [INFO] Using worker: sync
+   receipt-processor-challenge-web-1  | [2025-04-27 20:18:21 +0000] [7] [INFO] Booting worker with pid: 7
+   ```
+3. Open another terminal and store a receipt with a POST request to `/receipts/process`. The JSON in the request should match the format of
+   [simple-receipt.json](./examples/simple-receipt.json). For example, you can run the following command:
+   ```
+   curl -H 'Content-Type: application/json' \
+        -X POST \
+        -d '{
+          "retailer": "Target", "purchaseDate": "2022-01-01",
+          "purchaseTime": "13:01",
+          "items": [
+              {
+                  "shortDescription": "Mountain Dew 12PK",
+                  "price": "6.49"
+              },{
+                  "shortDescription": "Emils Cheese Pizza",
+                  "price": "12.25"
+              },{
+                  "shortDescription": "Knorr Creamy Chicken",
+                  "price": "1.26"
+              },{
+                  "shortDescription": "Doritos Nacho Cheese",
+                  "price": "3.35"
+              },{
+                  "shortDescription": "   Klarbrunn 12-PK 12 FL OZ  ",
+                  "price": "12.00"
+              }
+            ],
+            "total": "35.35"
+          }' \
+        localhost:8000/receipts/process
+   ```
+   If you ran the above command, the output on the terminal should look like this:
+   ```
+   {"id":"1"}
+   ```
+4. Submit a GET request to `/receipts/1/points` to see the amount of points awarded to the receipt we just stored. For example, you can run
+   the following command: `curl localhost:8000/receipts/1/points`.
 
-You can assume our engineers have Go and Docker installed to run your application. Go is our preferred language, but choosing it will not give you an advantage in the evaluation. If you are not using Go, include a Dockerized setup to run the code. You should also provide detailed instructions if your Docker file requires any additional configuration to run the application.
+   The output on the terminal should look like this:
+   ```
+   {"points":28}
+   ```
+5. Stop the application by pressing `CTRL+C` on the terminal running the application (or by running `docker compose down web`).
 
-## Submitting Your Solution
+## How to Execute Tests
 
-Provide a link to a public repository, such as GitHub or BitBucket, that contains your code to the provided link through Greenhouse.
+1. Open a terminal and navigate to the directory containing [compose.yaml](./compose.yaml) and the files above.
+2. Execute the tests by running `docker compose up test`.
+
+   All tests should pass and the output on the terminal should look like this:
+   ```
+   [+] Building 0.0s (0/0)                                      docker:default
+   [+] Running 1/0
+    ✔ Container receipt-processor-challenge-test-1  Created               0.0s
+   Attaching to receipt-processor-challenge-test-1
+   receipt-processor-challenge-test-1  | ============================= test session starts ==============================
+   receipt-processor-challenge-test-1  | platform linux -- Python 3.10.17, pytest-8.3.5, pluggy-1.5.0
+   receipt-processor-challenge-test-1  | rootdir: /root
+   receipt-processor-challenge-test-1  | plugins: mock-3.14.0
+   receipt-processor-challenge-test-1  | collected 152 items
+   receipt-processor-challenge-test-1  |
+   receipt-processor-challenge-test-1  | app/tests/test_app.py ........................                           [ 15%]
+   receipt-processor-challenge-test-1  | app/tests/test_point_calculator.py ..................................... [ 40%]
+   receipt-processor-challenge-test-1  | ........                                                                 [ 45%]
+   receipt-processor-challenge-test-1  | app/tests/test_purchased_item.py ...................                     [ 57%]
+   receipt-processor-challenge-test-1  | app/tests/test_receipt.py .............................................. [ 88%]
+   receipt-processor-challenge-test-1  | ...                                                                      [ 90%]
+   receipt-processor-challenge-test-1  | app/tests/test_receipt_database.py ...............                       [100%]
+   receipt-processor-challenge-test-1  |
+   receipt-processor-challenge-test-1  | ============================= 152 passed in 0.68s ==============================
+   receipt-processor-challenge-test-1 exited with code 0
+   ```
 
 ---
 ## Summary of API Specification
@@ -149,26 +226,3 @@ Breakdown:
   + ---------
   = 109 points
 ```
-
----
-
-# FAQ
-
-### How will this exercise be evaluated?
-An engineer will review the code you submit. At a minimum they must be able to run the service and the service must provide the expected results. You
-should provide any necessary documentation within the repository. While your solution does not need to be fully production ready, you are being evaluated so
-put your best foot forward.
-
-Part of that evaluation includes running an automated testing suite against your project to confirm it matches the specified API.
-
-### I have questions about the problem statement. What should I do?
-For any requirements not specified via an example, use your best judgment to determine the expected result.
-
-### Can I provide a private repository?
-If at all possible, we prefer a public repository because we do not know which engineer will be evaluating your submission. Providing a public repository
-ensures a speedy review of your submission. If you are still uncomfortable providing a public repository, you can work with your recruiter to provide access to
-the reviewing engineer.
-
-### How long do I have to complete the exercise?
-There is no time limit for the exercise. Out of respect for your time, we designed this exercise with the intent that it should take you a few hours. But, please
-take as much time as you need to complete the work.
