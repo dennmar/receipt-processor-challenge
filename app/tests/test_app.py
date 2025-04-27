@@ -57,7 +57,7 @@ class TestStoreReceipt:
     def test_invalid_value(self, client: FlaskClient) -> None:
         resp = client.post(self.ROUTE, json={
             'retailer': 'Target',
-            'purchasedate': '2022-30-72',
+            'purchaseDate': '2022-30-72',
             'purchaseTime': '13:13',
             'total': '1.25',
             'items': [
@@ -335,7 +335,7 @@ class TestGetPoints:
             'purchaseTime': '14:00',
             'items': [
                 {
-                    'shortDescription': '  Stuffed Bears     ',
+                    'shortDescription': '  Stuffed Teddy Bear     ',
                     'price': '230.28'
                 },
                 {
@@ -343,7 +343,7 @@ class TestGetPoints:
                     'price': '129.00'
                 },
                 {
-                    'shortDescription': 'Stuffed Pig #1',
+                    'shortDescription': 'Stuffed Pig #12',
                     'price': '10.24'
                 },
                 {
@@ -362,8 +362,6 @@ class TestGetPoints:
             'total': '10847.25'
         })
         resp = client.get('receipts/1/points')
-
-
 
         assert resp.status_code == 200
 
@@ -405,6 +403,18 @@ class TestGetPoints:
         assert resp.json == {'points': 2199}
 
     def test_example5_resp_code(self, client: FlaskClient) -> None:
+        client.post(self.ADD_ROUTE, json={
+            'retailer': 'Norm\'s 100% Organic Barn',
+            'purchaseDate': '2021-08-30',
+            'purchaseTime': '14:01',
+            'items': [],
+            'total': '0.00'
+        })
+        resp = client.get('receipts/1/points')
+
+        assert resp.status_code == 200
+
+    def test_example5_data(self, client: FlaskClient) -> None:
         client.post(self.ADD_ROUTE, json={
             'retailer': 'Norm\'s 100% Organic Barn',
             'purchaseDate': '2021-08-30',
