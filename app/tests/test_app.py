@@ -412,6 +412,18 @@ class TestGetPoints:
         })
         resp = client.get('receipts/1/points')
 
+        assert resp.status_code == 200
+
+    def test_example5_data(self, client: FlaskClient) -> None:
+        client.post(self.ADD_ROUTE, json={
+            'retailer': 'Norm\'s 100% Organic Barn',
+            'purchaseDate': '2021-08-30',
+            'purchaseTime': '14:01',
+            'items': [],
+            'total': '0.00'
+        })
+        resp = client.get('receipts/1/points')
+
         assert resp.json == {'points': 104}
 
     def test_empty_db_resp_code(self, client: FlaskClient) -> None:
