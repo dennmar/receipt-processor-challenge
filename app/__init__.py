@@ -52,7 +52,7 @@ def create_app() -> Flask:
                 points = score_receipt(receipt)
                 return {'points': points}, 200
             else:
-                return f'No receipt found with the id of {id}', 400
+                return f'No receipt found with the id of {id}', 404
         except Exception as err:
             return repr(err), 500
 
