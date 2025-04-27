@@ -363,8 +363,6 @@ class TestGetPoints:
         })
         resp = client.get('receipts/1/points')
 
-
-
         assert resp.status_code == 200
 
     def test_example4_data(self, client: FlaskClient) -> None:
