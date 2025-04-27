@@ -5,7 +5,7 @@ from app.receipt import Receipt
 class ReceiptDatabase:
     ## Initialize member variables for the database.
     ##
-    def __init__(self):
+    def __init__(self) -> None:
         self.receipts = {}
         self._receipts_added = 0
 
