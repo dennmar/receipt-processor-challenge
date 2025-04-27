@@ -57,7 +57,7 @@ class TestStoreReceipt:
     def test_invalid_value(self, client: FlaskClient) -> None:
         resp = client.post(self.ROUTE, json={
             'retailer': 'Target',
-            'purchasedate': '2022-30-72',
+            'purchaseDate': '2022-30-72',
             'purchaseTime': '13:13',
             'total': '1.25',
             'items': [
